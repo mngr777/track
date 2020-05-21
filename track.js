@@ -37,6 +37,10 @@ class Vect {
     }
 }
 
+function vect(x, y) {
+    return new Vect(x, y);
+}
+
 
 let LinkType = {
     In: 'in',
@@ -116,10 +120,18 @@ class TrackElementType {
         return TraceElement(pos, tiles, links);
     }
 
-    getDimensions() {
-        let min = null,
-            max = null;
-        // TODO
+    getWidth() {
+        let coords = this.tiles_.map(tile => tile.x)
+            .concat(this.links_.map(link => link.inner.x))
+            .concat(this.links_.map(link => link.outer.x));
+        return Math.max(...coords) - Math.min(...coords) + 1;
+    }
+
+    getHeight() {
+        let coords = this.tiles_.map(tile => tile.y)
+            .concat(this.links_.map(link => link.inner.y))
+            .concat(this.links_.map(link => link.outer.y));
+        return Math.max(...coords) - Math.min(...coords) + 1;
     }
 
     get tiles() { return this.tiles_; }
@@ -142,7 +154,7 @@ class Matrix {
     }
 
     add(pos, element) {
-        this.items_[pos.y] || this.items_[pos.y] = {};
+        this.items_[pos.y] || (this.items_[pos.y] = {});
         let row = this.items_[pos.y()];
         if (row[pos.x])
             throw "already exists";

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="./track.js"></script>
+        <script src="./render.js"></script>
+        <link href="./styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="editor"></div>
+        <div id="type-list"></div>
+
+        <script>
+            window.root = document.getElementById('editor');
+            window.grid = new GridWidget(20, 20);
+            root.appendChild(grid.element);
+            grid.reset();
+
+            window.typeListElement = document.getElementById('type-list');
+            window.types = [];
+            types.push(new TrackElementType(
+                "straight-2",
+                [vect(0, 1), vect(0, 2)],
+                [
+                    new Link(vect(0, 1), vect(0, 0)),
+                    new Link(vect(0, 2), vect(0, 3))
+                ]));
+            types.push(new TrackElementType(
+                "corner",
+                [vect(1, 0), vect(2, 0), vect(2, 1)],
+                [
+                    new Link(vect(1, 0), vect(0, 0)),
+                    new Link(vect(2, 1), vect(2, 2))
+                ]));
+
+            types.forEach(function(type) {
+                let widget = new TrackElementTypeWidget(type),
+                    container = makeElement('div');
+                container.appendChild(widget.element);
+                typeListElement.appendChild(container);
+                widget.render();
+            });
+        </script>
+    </body>
+</html>
